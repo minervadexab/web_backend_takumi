@@ -40,7 +40,7 @@ class SettingRoleController extends Controller
     //isikan kode berikut
 public function store(Request $request)
 {
-    try {
+    try {   
         //cek apakah request berisi users_id dan roles_id
         $validator = Validator::make($request->all(), [
             'users_id' => 'required',
@@ -96,7 +96,7 @@ public function store(Request $request)
             $response = [
                 'success' => true,
                 'data' => $data,
-                'message' => 'Selamat Datang, Admin',
+                'message' => 'Data tersedia',
             ];
 
             return response()->json($response, 200);

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Event;
+use Exception;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
@@ -12,16 +14,31 @@ class EventController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            $data = Event::all();
+            $response = [
+                'success' => true,
+                'data' => $data,
+                'message' => 'Data tersedia',
+            ];
+
+            return response()->json($response, 200);
+        } catch (Exception $th) {
+            $response = [
+                'success' => false,
+                'message' => $th,
+            ];
+            return response()->json($response, 500);
+        }
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        //
-    }
+    // public function create()
+    // {
+    //     //
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -42,10 +59,10 @@ class EventController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
-    }
+    // public function edit(string $id)
+    // {
+    //     //
+    // }
 
     /**
      * Update the specified resource in storage.

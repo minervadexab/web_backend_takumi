@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('potm_table', function (Blueprint $table) {
             $table->id();
+            $table->string('Nama Potm');
+            $table->text('deskripsi');
+            $table->string('image');
+            $table->text('gelar');
             $table->timestamps();
         });
     }

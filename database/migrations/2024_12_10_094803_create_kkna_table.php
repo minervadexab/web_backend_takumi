@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('kkna_table', function (Blueprint $table) {
             $table->id();
+            $table->string('sub judul');
+            $table->string('judul');
+            $table->string('image');
+            $table->text('deskripsi');
+            $table->datetime('tanggal');
             $table->timestamps();
         });
     }

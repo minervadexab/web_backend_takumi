@@ -11,12 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('article_table', function (Blueprint $table) {
+        Schema::create('kkna_table', function (Blueprint $table) {
             $table->id();
-            $table->string('judul article');
+            $table->string('judul_kegiatan');
+            $table->foreignId('prodi_id');
             $table->text('body');
             $table->string('image');
+            
             $table->timestamps();
+
+            $table->foreign('prodi_id')->references('id')->on('prodi_table')->onDelete('cascade')->onUpdate('cascade');
+
         });
     }
 
@@ -25,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('article_table');
+        Schema::dropIfExists('kkna_table');
     }
 };

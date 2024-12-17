@@ -11,14 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('event_table', function (Blueprint $table) {
+        Schema::create('news_table', function (Blueprint $table) {
             $table->id();
-            $table->string('judul acara');
-            $table->string('sub judul');
+            $table->string('judul_berita');
+            $table->foreignId('prodi_id');
+            $table->text('body');
             $table->string('image');
-            $table->text('deskripsi');
-            $table->datetime('tanggal');
+            $table->string('slug');
             $table->timestamps();
+
+            $table->foreign('prodi_id')->references('id')->on('prodi_table')->onDelete('cascade')->onUpdate('cascade');
+            
         });
     }
 
@@ -27,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('event_table');
+        Schema::dropIfExists('news_table');
     }
 };

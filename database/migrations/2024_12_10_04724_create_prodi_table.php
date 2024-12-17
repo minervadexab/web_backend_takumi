@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kkna_table', function (Blueprint $table) {
+        Schema::create('prodi_table', function (Blueprint $table) {
             $table->id();
-            $table->string('sub judul');
-            $table->string('judul');
-            $table->string('image');
+            $table->string('prodi');
             $table->text('deskripsi');
-            $table->datetime('tanggal');
+            $table->string('slug');
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kkna_table');
+        Schema::dropIfExists('prodi_table');
     }
 };

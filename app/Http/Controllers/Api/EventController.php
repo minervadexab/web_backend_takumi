@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Event;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class EventController extends Controller
 {
@@ -45,7 +47,57 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //isikan kode berikut
+        try {                                       
+            //cek apakah request berisi nama_role atau tidak
+            $validator = Validator::make($request->all(), [
+                'judul_acara' => 'required|string|max:255|unique:event',
+                'sub_judul' => 'required|string|max:255',
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'deskripsi' => 'required',
+                'tanggal' => 'required',
+            ]);
+            //kalau tidak akan mengembalikan error
+            if ($validator->fails()) {
+                return response()->json($validator->errors());
+            }
+            //logika untuk mengambil image
+            $url = null;
+            if ($request->image != null) {
+            $n = str_replace(' ', '-', $request->image);
+
+            $file = $request->file('image');
+            $path = $file->store('images', 'public');
+            $url = Storage::url($path);
+        }   
+            //kalau ya maka akan membuat roles baru
+            $data = Event::create([
+                'judul_acara' => $request->judul_acara,
+                'sub_judul' => $request->sub_judul,
+                'deskripsi' => $request->deskripsi,
+                'tanggal' => $request->tanggal,
+                'deskripsi' => $request->deskripsi,
+                'image' => $url
+            ]);
+            
+            //data akan di kirimkan dalam bentuk response list
+            $response = [
+                'success' => true,
+                'data' => $data,
+                'message' => 'Data Article berhasil di simpan',
+            ];
+            
+            //jika berhasil maka akan mengirimkan status code 200
+            return response()->json($response, 200);
+        } catch (Exception $th) {
+            $response = [
+                'success' => false,
+                'message' => $th,
+            ];
+            //jika error maka akan mengirimkan status code 500
+            return response()->json($response, 500);
+        }
+    
     }
 
     /**
@@ -53,7 +105,30 @@ class EventController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            $data = Event::find($id);
+            if ($data == null){
+                $response = [
+                    'success' => false,
+                    'message' => 'acara Tidak Ditemukan',
+                ];
+                return response()->json($response, 500);
+            }
+            $response = [
+                'success' => true,
+                'data' => $data,
+                'message' => 'ini acara yang di buat anda',
+            ];
+
+            return response()->json($response, 200);
+        } catch (Exception $th) {
+            $response = [
+                'success' => false,
+                'message' => 'acara Tidak Ditemukan',
+            ];
+            return response()->json($response, 500);
+        }
+
     }
 
     /**
@@ -77,6 +152,24 @@ class EventController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $save = Event::find($id);
+            if ($save == null) {
+                return response()->json(['success' => false, 'message' => 'Periksa kembali data yang akan di hapus'], 404);
+            }
+            $save->delete();
+            $response = [
+                'success' => true,
+                'message' => 'event berhasil dihapus',
+            ];
+            return response()->json($response, 200);
+        } catch (Exception $th) {
+            $response = [
+                'success' => false,
+                'message' => $th,
+            ];
+            return response()->json($response, 500);
+        }
+
     }
 }

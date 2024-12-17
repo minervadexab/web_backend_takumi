@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ArticleController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\RoleController as ApiRoleController;
 use App\Http\Controllers\Api\SettingRoleController;
@@ -20,7 +21,6 @@ Route::post('/login', [AuthController::class, 'login']);
 //route untuk grup yang sudah login
 Route::middleware('auth:sanctum')->group(function () {
 
-    //route untuk biasa aja
     route::post('/logout', [AuthController::class, 'logout']);
     route::post('/search', [AuthController::class, 'search']);
 
@@ -30,7 +30,7 @@ Route::middleware('auth:sanctum')->group(function () {
     
     // Rute untuk superadmin (role id 1)
 Route::middleware(['role:1'])->group(function () {
-        // Route::apiResource('articles', ArticleController::class);
+        Route::apiResource('articles', ArticleController::class);
         // Route::apiResource('project-research', ProjectResearchController::class);
         
         // Rute untuk admin artikel (role id 2)

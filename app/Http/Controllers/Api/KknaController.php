@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kkna;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class KknaController extends Controller
 {
@@ -12,23 +16,87 @@ class KknaController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            $data = Kkna::all();
+            $response = [
+                'success' => true,
+                'data' => $data,
+                'message' => 'Data tersedia',
+            ];
+
+            return response()->json($response, 200);
+        } catch (Exception $th) {
+            $response = [
+                'success' => false,
+                'message' => $th,
+            ];
+            return response()->json($response, 500);
+        }
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        //
-    }
+    // public function create()
+    // {
+    //     //
+    // }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        //isikan kode berikut
+        try {                                       
+            //cek apakah request berisi nama_role atau tidak
+            $validator = Validator::make($request->all(), [
+                'sub_judul' => 'required|string|max:255|unique:kkna',
+                'judul' => 'required|string|max:255',
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'deskripsi' => 'required',
+                'tanggal' => 'required',
+            ]);
+            //kalau tidak akan mengembalikan error
+            if ($validator->fails()) {
+                return response()->json($validator->errors());
+            }
+            //logika untuk mengambil image
+            $url = null;
+            if ($request->image != null) {
+            $n = str_replace(' ', '-', $request->image);
+
+            $file = $request->file('image');
+            $path = $file->store('images', 'public');
+            $url = Storage::url($path);
+        }   
+            //kalau ya maka akan membuat roles baru
+            $data = Kkna::create([
+                'sub_judul' => $request->sub_judul,
+                'judul' => $request->judul, 
+                'image' => $url,
+                'deskripsi' => $request->deskripsi,
+                'tanggal' => $request->tanggal
+            ]);
+            
+            //data akan di kirimkan dalam bentuk response list
+            $response = [
+                'success' => true,
+                'data' => $data,
+                'message' => 'Data Article berhasil di simpan',
+            ];
+            
+            //jika berhasil maka akan mengirimkan status code 200
+            return response()->json($response, 200);
+        } catch (Exception $th) {
+            $response = [
+                'success' => false,
+                'message' => $th,
+            ];
+            //jika error maka akan mengirimkan status code 500
+            return response()->json($response, 500);
+        }
+    
     }
 
     /**
@@ -36,16 +104,39 @@ class KknaController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            $data = Kkna::find($id);
+            if ($data == null){
+                $response = [
+                    'success' => false,
+                    'message' => 'acara Tidak Ditemukan',
+                ];
+                return response()->json($response, 500);
+            }
+            $response = [
+                'success' => true,
+                'data' => $data,
+                'message' => 'ini acara yang di buat anda',
+            ];
+
+            return response()->json($response, 200);
+        } catch (Exception $th) {
+            $response = [
+                'success' => false,
+                'message' => 'acara Tidak Ditemukan',
+            ];
+            return response()->json($response, 500);
+        }
+
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
-    }
+    // public function edit(string $id)
+    // {
+    //     //
+    // }
 
     /**
      * Update the specified resource in storage.
@@ -60,6 +151,24 @@ class KknaController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $save = Kkna::find($id);
+            if ($save == null) {
+                return response()->json(['success' => false, 'message' => 'Periksa kembali data yang akan di hapus'], 404);
+            }
+            $save->delete();
+            $response = [
+                'success' => true,
+                'message' => 'kehidupan kampus dan non akademik berhasil dihapus',
+            ];
+            return response()->json($response, 200);
+        } catch (Exception $th) {
+            $response = [
+                'success' => false,
+                'message' => $th,
+            ];
+            return response()->json($response, 500);
+        }
+
     }
 }

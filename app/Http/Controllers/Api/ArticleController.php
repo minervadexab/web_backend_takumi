@@ -74,7 +74,7 @@ class ArticleController extends Controller
             $data = article::create([
                 'judul_article' => $request->judul_article,
                 'body' => $request->body,
-                'image' => $request->image
+                'image' => $url
             ]);
             
             //data akan di kirimkan dalam bentuk response list

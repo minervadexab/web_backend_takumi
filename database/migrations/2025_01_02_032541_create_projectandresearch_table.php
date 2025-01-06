@@ -11,16 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('event_table', function (Blueprint $table) {
+        Schema::create('projectandresearch_table', function (Blueprint $table) {
             $table->id();
-            $table->string('judul_event');
-            $table->foreignId('prodi_id');
+            $table->string('judul_project');
+            $table->foreignId('users_id');
             $table->text('body');
             $table->string('image');
-            $table->string('lokasi');
-            $table->timestamps();
-
-            $table->foreign('prodi_id')->references('id')->on('prodi_table')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('slug');
+            $table->timestamps(); 
+            $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('event_table');
+        Schema::dropIfExists('projectandresearch_table');
     }
 };

@@ -15,7 +15,13 @@ class article extends Model
     protected $fillable = [
         'judul_article', 
         'body', 
-        'image'
+        'image',
+        'slug',
+        'users_id',
     ];
 
+    public function prodi()
+    {
+        return $this->belongsTo(prodi::class, 'prodi_id');
+    }
 }

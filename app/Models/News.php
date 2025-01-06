@@ -14,8 +14,15 @@ class news extends Model
     protected $table = 'news_table';
 
     protected $fillable = [
-        'Judul Berita',
-        'Deskripsi',
+        'judul_berita',
+        'users_id',
+        'body',
         'image',
+        'slug',
     ];
+
+    public function prodi()
+    {
+        return $this->belongsTo(prodi::class);
+    }
 }

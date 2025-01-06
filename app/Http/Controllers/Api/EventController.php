@@ -51,11 +51,12 @@ class EventController extends Controller
         try {                                       
             //cek apakah request berisi nama_role atau tidak
             $validator = Validator::make($request->all(), [
-                'judul_acara' => 'required|string|max:255|unique:event',
-                'sub_judul' => 'required|string|max:255',
+                'judul_event' => 'required|string|max:255|unique:event',
+                'users_id' => 'required',
+                'body' => 'required',
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'deskripsi' => 'required',
-                'tanggal' => 'required',
+                'lokasi' => 'required',
+                'slug' => 'required',
             ]);
             //kalau tidak akan mengembalikan error
             if ($validator->fails()) {
@@ -72,12 +73,12 @@ class EventController extends Controller
         }   
             //kalau ya maka akan membuat roles baru
             $data = Event::create([
-                'judul_acara' => $request->judul_acara,
-                'sub_judul' => $request->sub_judul,
-                'deskripsi' => $request->deskripsi,
-                'tanggal' => $request->tanggal,
-                'deskripsi' => $request->deskripsi,
-                'image' => $url
+                'judul_event' => $request->judul_event,
+                'users_id' => $request->users_id,
+                'body' => $request->body,
+                'image' => $url,
+                'lokasi' => $request->lokasi,
+                'slug' => $request->slug
             ]);
             
             //data akan di kirimkan dalam bentuk response list

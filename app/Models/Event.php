@@ -13,10 +13,16 @@ class Event extends Model
     protected $table = 'event_table';
 
     protected $fillable = [
-        'judul_acara', 
-        'sub_judul', 
+        'judul_event',
+        'slug',
+        'users_id', 
         'image', 
-        'deskripsi', 
-        'tanggal'
+        'body', 
+        'lokasi'
     ];
+
+    public function prodi()
+    {
+        return $this->belongsTo(Prodi::class);
+    }
 }

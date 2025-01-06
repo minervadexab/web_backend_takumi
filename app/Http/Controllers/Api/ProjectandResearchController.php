@@ -51,12 +51,12 @@ class projectandresearchController extends Controller
         try {                                       
             //cek apakah request berisi nama_role atau tidak
             $validator = Validator::make($request->all(), [
-                'judul' => 'required|string|max:255|unique:projectandresearch',
-                'sub_judul' => 'required|string|max:255',
+                'judul_project' => 'required|string|max:255|unique:projectandresearch',
+                'users_id' => 'required',
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'deskripsi' => 'required',
+                'body' => 'required',
                 // 'gelar' => 'required',
-                'tanggal' => 'required',
+                'slug' => 'required',
             ]);
             //kalau tidak akan mengembalikan error
             if ($validator->fails()) {
@@ -73,11 +73,11 @@ class projectandresearchController extends Controller
         }   
             //kalau ya maka akan membuat roles baru
             $data = projectandresearch::create([
-                'judul' => $request->judul,
-                'sub_judul' => $request->sub_judul,
+                'judul_project' => $request->judul_project,
+                'users_id' => $request->users_id,
+                'body' => $request->body,
                 'image' => $url,
-                'deskripsi' => $request->deskripsi,
-                'tanggal' => $request->tanggal
+                'slug' => $request->slug
             ]);
             
             //data akan di kirimkan dalam bentuk response list

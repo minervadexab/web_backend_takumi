@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('article_table', function (Blueprint $table) {
             $table->id();
             $table->string('judul_article');
-            $table->foreignId('prodi_id');
+            $table->foreignId('users_id');
             $table->text('body');
             $table->string('image');
             $table->string('slug');
             $table->timestamps();
 
-            $table->foreign('prodi_id')->references('id')->on('prodi_table')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 
         });
     }

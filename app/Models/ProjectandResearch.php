@@ -13,10 +13,15 @@ class projectandresearch extends Model
     protected $table = 'projectandresearch_table';
 
     protected $fillable = [
-        'judul',
-        'sub judul',
+        'judul_project',
+        'users_id', 
         'image',
-        'deskripsi',
-        'tanggal',
+        'body',
+        'slug',
     ];
+
+    public function prodi()
+    {
+        return $this->belongsTo(prodi::class);
+    }
 }

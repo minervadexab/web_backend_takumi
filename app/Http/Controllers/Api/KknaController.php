@@ -51,11 +51,12 @@ class KknaController extends Controller
         try {                                       
             //cek apakah request berisi nama_role atau tidak
             $validator = Validator::make($request->all(), [
-                'sub_judul' => 'required|string|max:255|unique:kkna',
-                'judul' => 'required|string|max:255',
+                'judul_kegiatan' => 'required|string|max:255|unique:kkna',
+                'users_id' => 'required',
+                'jenis_akademik_id' => 'required',
+                'body' => 'required',
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'deskripsi' => 'required',
-                'tanggal' => 'required',
+                'slug' => 'required',
             ]);
             //kalau tidak akan mengembalikan error
             if ($validator->fails()) {
@@ -72,11 +73,12 @@ class KknaController extends Controller
         }   
             //kalau ya maka akan membuat roles baru
             $data = Kkna::create([
-                'sub_judul' => $request->sub_judul,
-                'judul' => $request->judul, 
+                'judul_kegiatan' => $request->judul_kegiatan,
+                'users_id' => $request->users_id,
+                'jenis_akademik_id' => $request->jenis_akademik_id,
+                'body' => $request->body,
                 'image' => $url,
-                'deskripsi' => $request->deskripsi,
-                'tanggal' => $request->tanggal
+                'slug' => $request->slug
             ]);
             
             //data akan di kirimkan dalam bentuk response list

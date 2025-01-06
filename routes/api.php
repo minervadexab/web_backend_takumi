@@ -2,8 +2,6 @@
 
 use App\Http\Controllers\Api\ArticleController;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\RoleController as ApiRoleController;
-use App\Http\Controllers\Api\SettingRoleController;
 use Illuminate\Http\Request;
 // use App\Http\Controllers\ArticleController;
 // use App\Http\Controllers\ProjectResearchController;
@@ -23,10 +21,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     route::post('/logout', [AuthController::class, 'logout']);
     route::post('/search', [AuthController::class, 'search']);
-
-    //route untuk role and SettingRole
-    Route::Resource('role', ApiRoleController::class);
-    Route::Resource('setting-role', SettingRoleController::class);
     
     // Rute untuk superadmin (role id 1)
 Route::middleware(['role:1'])->group(function () {

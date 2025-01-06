@@ -13,10 +13,17 @@ class Kkna extends Model
     protected $table = 'kkna_table';
 
     protected $fillable = [
-        'sub judul', 
-        'judul', 
+        'judul_kegiatan', 
+        'users_id',
+        'jenis_akademik_id',
         'image', 
-        'deskripsi', 
-        'tanggal'
+        'body', 
+        'slug'
     ];
+
+    public function prodi()
+    {
+        return $this->belongsTo(Prodi::class);
+    }
+
 }

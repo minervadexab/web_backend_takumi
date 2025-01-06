@@ -55,7 +55,9 @@ class ArticleController extends Controller
             $validator = Validator::make($request->all(), [
                 'judul_article' => 'required|string|max:255|unique:article',
                 'body' => 'required',
+                'users_id' => 'required',
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'slug' => 'required',
             ]);
             //kalau tidak akan mengembalikan error
             if ($validator->fails()) {
@@ -74,7 +76,9 @@ class ArticleController extends Controller
             $data = article::create([
                 'judul_article' => $request->judul_article,
                 'body' => $request->body,
-                'image' => $url
+                'image' => $url,
+                'users_id' => $request->users_id,
+                'slug' => $request->slug
             ]);
             
             //data akan di kirimkan dalam bentuk response list

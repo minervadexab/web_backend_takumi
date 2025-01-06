@@ -52,8 +52,10 @@ class NewsController extends Controller
             //cek apakah request berisi nama_role atau tidak
             $validator = Validator::make($request->all(), [
                 'judul_berita' => 'required|string|max:255|unique:news',
-                'deskripsi' => 'required',
+                'users_id' => 'required',
+                'body' => 'required',
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'slug' => 'required',
                 // 'tanggal' => 'required',
             ]);
             //kalau tidak akan mengembalikan error

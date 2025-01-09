@@ -51,12 +51,12 @@ class EventController extends Controller
         try {                                       
             //cek apakah request berisi nama_role atau tidak
             $validator = Validator::make($request->all(), [
-                'judul_event' => 'required|string|max:255|unique:event',
+                'judul_event' => 'required|string|max:255|unique:event_table',
                 'users_id' => 'required',
                 'body' => 'required',
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 'lokasi' => 'required',
-                'slug' => 'required',
+                'slug' => 'required|string|unique:event_table',
             ]);
             //kalau tidak akan mengembalikan error
             if ($validator->fails()) {

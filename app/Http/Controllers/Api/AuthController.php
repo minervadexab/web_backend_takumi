@@ -22,7 +22,7 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
-            'prodi_id' => 'required|exists:prodis,id',
+            'prodi_id' => 'required|exists:prodi_table,id',
         ]);
 
         if ($validator->fails()) {
@@ -94,7 +94,7 @@ class AuthController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         // Redirect dengan token
-        return redirect()->route('index')->with('success', 'Login berhasil')->with('access_token', $token);
+        return redirect()->route('dashboard')->with('success', 'Login berhasil')->with('access_token', $token);
     }
 
     /**

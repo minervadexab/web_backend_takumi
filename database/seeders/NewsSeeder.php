@@ -16,7 +16,7 @@ class NewsSeeder extends Seeder
         $newsData = [
             [
                 'judul_berita' => 'Berita Teknologi Terbaru',
-                'users_id' => 1, // Pastikan user dengan ID ini ada di tabel users
+                'prodi_table_id' => 3, // Pastikan user dengan ID ini ada di tabel users
                 'body' => 'Ini adalah konten berita tentang teknologi terbaru yang sangat menarik.',
                 'image' => 'tech-news.jpg',
                 'slug' => Str::slug('berita-teknologi-terbaru'),
@@ -25,7 +25,7 @@ class NewsSeeder extends Seeder
             ],
             [
                 'judul_berita' => 'Pembaruan Dunia Olahraga',
-                'users_id' => 1, // Pastikan user dengan ID ini ada di tabel users
+                'prodi_table_id' => 2, // Pastikan user dengan ID ini ada di tabel users
                 'body' => 'Berita mengenai perkembangan terbaru di dunia olahraga.',
                 'image' => 'sports-news.jpg',
                 'slug' => Str::slug('pembaruan-dunia-olahraga'),
@@ -34,7 +34,7 @@ class NewsSeeder extends Seeder
             ],
             [
                 'judul_berita' => 'Ekonomi Dunia Meningkat',
-                'users_id' => 1, // Pastikan user dengan ID ini ada di tabel users
+                'prodi_table_id' => 5, // Pastikan user dengan ID ini ada di tabel users
                 'body' => 'Artikel yang membahas tentang kenaikan ekonomi global.',
                 'image' => 'economy-news.jpg',
                 'slug' => Str::slug('ekonomi-dunia-meningkat'),

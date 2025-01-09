@@ -50,9 +50,9 @@ class JenisAkademikController extends Controller
         try {                                           
             //cek apakah request berisi nama_role atau tidak
             $validator = Validator::make($request->all(), [
-                'jenis_akademik' => 'required|string|max:255|unique:jenis_akademik',
+                'jenis_akademik' => 'required|string|max:255|unique:jenis_akademik_table',
                 'deskripsi' => 'required',
-                'slug' => 'required',
+                'slug' => 'required|string|unique:jenis_akademik_table',
             ]);
             
             //kalau tidak akan mengembalikan error

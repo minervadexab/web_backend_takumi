@@ -51,12 +51,12 @@ class projectandresearchController extends Controller
         try {                                       
             //cek apakah request berisi nama_role atau tidak
             $validator = Validator::make($request->all(), [
-                'judul_project' => 'required|string|max:255|unique:projectandresearch',
+                'judul_project' => 'required|string|max:255|unique:projectandresearch_table',
                 'users_id' => 'required',
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 'body' => 'required',
                 // 'gelar' => 'required',
-                'slug' => 'required',
+                'slug' => 'required|string|unique:projectandresearch_table',
             ]);
             //kalau tidak akan mengembalikan error
             if ($validator->fails()) {

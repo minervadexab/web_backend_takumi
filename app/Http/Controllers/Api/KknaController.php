@@ -51,12 +51,12 @@ class KknaController extends Controller
         try {                                       
             //cek apakah request berisi nama_role atau tidak
             $validator = Validator::make($request->all(), [
-                'judul_kegiatan' => 'required|string|max:255|unique:kkna',
+                'judul_kegiatan' => 'required|string|max:255|unique:kkna_table',
                 'users_id' => 'required',
                 'jenis_akademik_id' => 'required',
                 'body' => 'required',
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'slug' => 'required',
+                'slug' => 'required|string|unique:kkna_table',
             ]);
             //kalau tidak akan mengembalikan error
             if ($validator->fails()) {

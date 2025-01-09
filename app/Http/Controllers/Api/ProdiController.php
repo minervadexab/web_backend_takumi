@@ -44,45 +44,42 @@ class ProdiController extends Controller
      */
     public function store(Request $request)
     {
-        //isikan kode berikut
-        try {                                           
-            //cek apakah request berisi nama_role atau tidak
+        try {
+            // Validasi input
             $validator = Validator::make($request->all(), [
-                'prodi' => 'required|string|max:255|unique:prodi',
-                'deskripsi' => 'required',
-                'slug' => 'required',
+                'prodi' => 'required|string|max:255|unique:prodi_table',
+                'deskripsi' => 'required|string',
+                'slug' => 'required|string|unique:prodi_table',
             ]);
-            
-            //kalau tidak akan mengembalikan error
+
+            // Jika validasi gagal, kirimkan respons error
             if ($validator->fails()) {
-                return response()->json($validator->errors());
+                return response()->json([
+                    'success' => false,
+                    'errors' => $validator->errors(),
+                ], 422);
             }
-            
-            //kalau ya maka akan membuat roles baru
+
+            // Simpan data ke database
             $data = Prodi::create([
-                'prodi' => $request->jenis_akademik,
-                'deskripsi' => $request->deskripsi,
-                'slug' => $request->slug
+                'prodi' => $request->input('prodi'),
+                'deskripsi' => $request->input('deskripsi'),
+                'slug' => $request->input('slug'),
             ]);
-            
-            //data akan di kirimkan dalam bentuk response list
-            $response = [
+
+            // Kirimkan respons sukses
+            return response()->json([
                 'success' => true,
                 'data' => $data,
-                'message' => 'Data berhasil di simpan',
-            ];
-            
-            //jika berhasil maka akan mengirimkan status code 200
-            return response()->json($response, 200);
-        } catch (Exception $th) {
-            $response = [
+                'message' => 'Data berhasil disimpan',
+            ], 201);
+        } catch (Exception $e) {
+            // Jika terjadi kesalahan, kirimkan respons error
+            return response()->json([
                 'success' => false,
-                'message' => $th,
-            ];
-            //jika error maka akan mengirimkan status code 500
-            return response()->json($response, 500);
+                'message' => $e->getMessage(),
+            ], 500);
         }
-    
     }
 
     /**

@@ -104,7 +104,7 @@ class AuthController extends Controller
     {
         $request->user()->tokens()->delete();
 
-        return response()->json(['success' => true, 'message' => 'Thank You.']);
+        return redirect()->route('loginform')->with('success', 'Logout berhasil');
     }
     
     /**

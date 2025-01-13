@@ -63,7 +63,7 @@
                 <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
                   <!-- Tambahkan logo di sini -->
                   <div class="text-center mb-2">
-                    <img src="{{ asset('logo/takumi.png') }}" alt="Smart Building Logo" class="img-fluid" style="width: 250px; height: auto;">
+                    <img src="{{ asset('logo/takumi.png') }}" alt="Politeknik Takumi" class="img-fluid" style="width: 250px; height: auto;">
                   </div>
                   {{-- <h2 class="card-title fw-bold mb-1">Welcome to Smart Building! 👋</h2> --}}
                   {{-- <p class="card-text mb-2">Silahkan login ke akun admin smart building</p> --}}

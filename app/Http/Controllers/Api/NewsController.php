@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\news;
+use App\Models\Prodi;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -15,6 +17,26 @@ class NewsController extends Controller
      * Display a listing of the resource.
      */
     public function index()
+    {
+        try {
+            $data = news::all();
+            $response = [
+                'success' => true,
+                'data' => $data,
+                'message' => 'Data tersedia',
+            ];
+
+            return response()->json($response, 200);
+        } catch (Exception $th) {
+            $response = [
+                'success' => false,
+                'message' => $th,
+            ];
+            return response()->json($response, 500);
+        }
+    }
+
+    public function getNewsUser()
     {
         try {
             $data = news::all();
@@ -47,56 +69,70 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        //isikan kode berikut
-        try {                                       
-            //cek apakah request berisi nama_role atau tidak
+        try {
+            // Validasi input
             $validator = Validator::make($request->all(), [
                 'judul_berita' => 'required|string|max:255|unique:news_table',
-                'users_id' => 'required',
+                'users_id' => 'required|exists:users,id',
                 'body' => 'required',
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:12820',
                 'slug' => 'required|string|unique:news_table',
-                // 'tanggal' => 'required',
             ]);
-            //kalau tidak akan mengembalikan error
-            if ($validator->fails()) {
-                return response()->json($validator->errors());
-            }
-            //logika untuk mengambil image
-            $url = null;
-            if ($request->image != null) {
-            $n = str_replace(' ', '-', $request->image);
 
-            $file = $request->file('image');
-            $path = $file->store('images', 'public');
-            $url = Storage::url($path);
-        }   
-            //kalau ya maka akan membuat roles baru
+            // Jika validasi gagal, kembalikan error
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => $validator->errors(),
+                ], 422);
+            }
+
+            // Ambil data user berdasarkan ID
+            $user = User::find($request->users_id);
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User tidak ditemukan.',
+                ], 404);
+            }
+
+            // Ambil prodi_id dari user
+            $prodi_id = $user->prodi_id;
+
+            // Proses upload image (jika ada)
+            $fullpath = null;
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $path = $file->store('images', 'public');
+                $fullpath = env('APP_URL') . Storage::url($path);
+            }
+
+            // Simpan data ke tabel news
             $data = news::create([
                 'judul_berita' => $request->judul_berita,
+                'user_id' => $request->users_id,
+                'prodi_table_id' => $prodi_id,
+                'body' => $request->body,
                 'deskripsi' => $request->deskripsi,
-                'image' => $url
+                'image' => $fullpath,
+                'slug' => $request->slug,
             ]);
-            
-            //data akan di kirimkan dalam bentuk response list
-            $response = [
+
+            // Kembalikan response sukses
+            return response()->json([
                 'success' => true,
                 'data' => $data,
-                'message' => 'Data berita berhasil di simpan',
-            ];
-            
-            //jika berhasil maka akan mengirimkan status code 200
-            return response()->json($response, 200);
+                'message' => 'Data berita berhasil disimpan',
+            ], 200);
         } catch (Exception $th) {
-            $response = [
+            // Tangkap error dan kembalikan response
+            return response()->json([
                 'success' => false,
-                'message' => $th,
-            ];
-            //jika error maka akan mengirimkan status code 500
-            return response()->json($response, 500);
+                'message' => 'Terjadi kesalahan: ' . $th->getMessage(),
+            ], 500);
         }
-    
     }
+
 
     /**
      * Display the specified resource.

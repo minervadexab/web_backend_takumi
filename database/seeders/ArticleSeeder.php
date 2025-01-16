@@ -16,7 +16,7 @@ class ArticleSeeder extends Seeder
         DB::table('article_table')->insert([
             [
                 'judul_article' => 'Mengenal Teknologi Blockchain',
-                'prodi_table_id' => 3, // Pastikan user dengan ID 1 ada di tabel `users`
+                'prodi_table_id' => 1, // Pastikan user dengan ID 1 ada di tabel `users`
                 'body' => 'Artikel ini membahas tentang dasar-dasar teknologi blockchain, bagaimana cara kerjanya, dan potensinya di berbagai sektor.',
                 'image' => 'blockchain-article.jpg',
                 'slug' => Str::slug('Mengenal Teknologi Blockchain'),

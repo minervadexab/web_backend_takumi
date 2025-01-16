@@ -24,7 +24,13 @@ Route::post('/login', [AuthController::class, 'login']);
 //untuk prodi
 Route::resource('prodi', ProdiController::class); 
 //untuk jenisakademik
-Route::resource('jenisakademik', JenisAkademikController::class); 
+Route::resource('jenisakademik', JenisAkademikController::class);
+Route::middleware('auth:sanctum')->get('/news', [NewsController::class, 'index']);
+
+
+//benerin lagi ini posisinya
+Route::get('/newsuser', [NewsController::class, 'getNewsUser']);
+
 
 //route untuk grup yang sudah login
 Route::middleware('auth:sanctum')->group(function () {
@@ -34,12 +40,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //untuk article
     Route::resource('article', ArticleController::class); 
+    Route::resource('news', NewsController::class); 
     //untuk event
     Route::resource('event', EventController::class); 
     //untuk kehidupan kampus non akademik
     Route::resource('kkna', KknaController::class); 
     //untuk news
-    Route::resource('news', NewsController::class); 
+    // Route::resource('news', NewsController::class); 
     //untuk project and research
     Route::resource('project-research', projectandresearchController::class); 
 

@@ -16,6 +16,7 @@ class news extends Model
     protected $fillable = [
         'judul_berita',
         'users_id',
+        'prodi_table_id',
         'body',
         'image',
         'slug',
